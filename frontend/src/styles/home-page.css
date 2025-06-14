@@ -1,0 +1,202 @@
+.home-page-wrapper .home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.home-page-wrapper .sectionContainer {
+  margin: 0 10rem;
+  align-items: center;
+  flex-direction: column;
+  padding: 3rem 0;
+}
+
+.home-page-wrapper .section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: rgb(19, 25, 33);
+}
+
+.home-page-wrapper .categories-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.home-page-wrapper .category-button {
+  background: rgb(35, 47, 62);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease, transform 0.2s ease;
+  color: white;
+}
+
+.home-page-wrapper .category-button:hover {
+  background: rgb(19, 25, 33);
+}
+
+.home-page-wrapper .category-button.active {
+  background: rgb(19, 25, 33);
+  color: white;
+  transform: scale(1.05);
+}
+
+.home-page-wrapper .products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.home-page-wrapper .product-card {
+  padding: 1rem;
+  border: 1px solid rgb(35, 47, 62);
+
+  text-align: center;
+}
+
+.home-page-wrapper .product-card img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.home-page-wrapper .product-card h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.home-page-wrapper .product-card p {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .home-page-wrapper .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page-wrapper .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .home-page-wrapper .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+.home-page-wrapper .no-products {
+  text-align: center;
+  font-size: 1.25rem;
+  color: green;
+  margin-top: 1rem;
+}
+
+.home-page-wrapper .promo-banner {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/image/3.avif");
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 0;
+  color: rgb(35, 47, 62);
+}
+
+.home-page-wrapper .promo-content {
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.home-page-wrapper .promo-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.home-page-wrapper .promo-content p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.home-page-wrapper .newsletter-section {
+  background-color: rgb(35, 47, 62);
+}
+
+.home-page-wrapper .newsletter-content {
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.home-page-wrapper .newsletter-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.home-page-wrapper .newsletter-content p {
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.home-page-wrapper .newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.home-page-wrapper .newsletter-form input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid white;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .home-page-wrapper .home-page {
+    gap: 2rem;
+  }
+
+  .home-page-wrapper .section {
+    padding: 2rem 0;
+  }
+
+  .home-page-wrapper .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .home-page-wrapper .promo-content h2 {
+    font-size: 2rem;
+  }
+
+  .home-page-wrapper .promo-content p {
+    font-size: 1rem;
+  }
+
+  .home-page-wrapper .newsletter-form {
+    flex-direction: column;
+  }
+
+  .home-page-wrapper .sectionContainer {
+    margin: 0 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page-wrapper .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .home-page-wrapper .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .home-page-wrapper .sectionContainer {
+    margin: 0 1rem;
+  }
+}

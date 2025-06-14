@@ -1,0 +1,2669 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://localhost:5173/admin/products -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="module">
+import RefreshRuntime from "/@react-refresh"
+RefreshRuntime.injectIntoGlobalHook(window)
+window.$RefreshReg$ = () => {}
+window.$RefreshSig$ = () => (type) => type
+window.__vite_plugin_react_preamble_installed__ = true
+</script>
+
+    <script type="module" src="./Amazon clone_files/client"></script>
+
+    
+    <link rel="icon" type="image/svg+xml" href="http://localhost:5173/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Amazon clone</title>
+  <style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/navbar.css">.navbar {
+  position: sticky;
+  top: 0;
+  height: 90px;
+  z-index: 100;
+  background-color: rgb(19, 25, 33);
+  box-shadow: 0 2px 4px black;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  padding: 0 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: white !important;
+}
+
+.logout-button {
+  padding: 0.4rem 0.8rem;
+  background-color:rgb(77,25,0);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  /* margin-right: 1rem; */
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: black;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+}
+
+.nav-links {
+  display: flex;
+}
+
+.nav-links ul {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: white;
+  font-weight: 800;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: black;
+}
+
+.login-button {
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: #4E1F00;
+  border-radius: 5px;
+  font-weight: 600;
+  margin-right: 10px;
+  transition: background-color 0.2s ease;
+}
+.register-button{
+  padding: 0.5rem 1rem;
+  background-color: white;
+  color: #4E1F00;
+  border-radius: 5px;
+  font-weight: 600;
+  margin-right: 10px;
+  transition: background-color 0.2s ease;
+}
+.login-button:hover {
+  background-color: white;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-icon {
+  position: relative;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.cart-icon:hover {
+  color: white;
+}
+
+.cart-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: black;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.cart-icon:hover .cart-count {
+  transform: scale(1.1);
+}
+
+.mobile-menu-button {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+}
+
+.mobile-menu-button span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: var(--text-color);
+  border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background-color: black;
+    overflow: hidden;
+    transition: height 0.3s ease;
+  }
+
+  .nav-links.active {
+    height: auto;
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    gap: 0;
+    padding: 1rem 0;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 1rem 1.5rem;
+  }
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/carousel.css">.carousel {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+}
+
+.carousel-content {
+  text-align: center;
+  color: white;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.carousel-content h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-content p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 2px white;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: rgb(35, 47, 62);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.carousel-arrow:hover {
+  background-color:rgb(19, 25, 33);
+}
+
+.carousel-arrow-prev {
+  left: 20px;
+  color: white;
+}
+
+.carousel-arrow-next {
+  right: 20px;
+  color:white;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.carousel-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgb(19, 25, 33);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.carousel-indicator.active {
+  background-color: white;
+}
+
+@media (max-width: 768px) {
+  .carousel {
+    height: 400px;
+  }
+
+  .carousel-content h2 {
+    font-size: 2rem;
+  }
+
+  .carousel-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel {
+    height: 300px;
+  }
+
+  .carousel-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .carousel-arrow {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/product-card.css">.product-card {
+  position: relative;
+  background-color: #fff;
+  
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: white;
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-image {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.05);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color:rgb(19, 25, 33);
+  color: black;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.product-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color:rgb(19, 25, 33);
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color:rgb(35, 47, 62); /* default dark text */
+  margin-bottom: 0.5rem;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.stars {
+  display: flex;
+}
+
+.star {
+  color:rgb(19, 25, 33);
+  font-size: 1rem;
+}
+
+.star.filled {
+  color: rgb(35, 47, 62);
+}
+
+.review-count {
+  font-size: 0.875rem;
+  color: black;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgb(35, 47, 62);
+  color:white;
+  border: none;
+  border-radius: 0 0 8px 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: rgb(19, 25, 33);
+}
+
+
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/home-page.css">.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.sectionContainer {
+  margin: 0 10rem;
+  align-items: center;
+  /* display: flex; */
+  flex-direction: column;
+  padding: 3rem 0;
+}
+/*heading colour*/
+.section h2{
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color:rgb(19, 25, 33);
+}
+
+.categories-grid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.category-button {
+  background:rgb(35, 47, 62);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.category-button:hover {
+  background: rgb(19, 25, 33);
+}
+
+.category-button.active {
+  background: rgb(19, 25, 33);
+  color:rgb(35, 47, 62);
+  transform: scale(1.05);
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  
+}
+
+.product-card {
+  padding: 1rem;
+  border: 1px solid rgb(35, 47, 62);
+  
+  text-align: center;
+}
+
+.product-card img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.product-card h3 {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+}
+
+.product-card p {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+
+  .category-button {
+    padding: 0.5rem 1rem;
+  }
+}
+.no-products {
+  text-align: center;
+  font-size: 1.25rem;
+  color: green;
+  margin-top: 1rem;
+}
+/*promo banner means session arrival*/
+.promo-banner {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/image/3.avif");
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 0;
+  color: rgb(35, 47, 62);
+}
+
+.promo-content {
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.promo-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.promo-content p {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.newsletter-section {
+  background-color: rgb(35, 47, 62);
+}
+
+.newsletter-content {
+  max-width: 600px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.newsletter-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.newsletter-content p {
+  margin-bottom: 1.5rem;
+}
+
+.newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid white ;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    gap: 2rem;
+  }
+
+  .section {
+    padding: 2rem 0;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .promo-content h2 {
+    font-size: 2rem;
+  }
+
+  .promo-content p {
+    font-size: 1rem;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .categories-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/login.css">.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+  }
+  
+  .auth-box {
+    background-color: lightblue;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 1.5rem;
+    color:black;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: green;
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .auth-button:hover {
+    background-color: darken(green, 10%);
+    color: blue;
+  }
+  .error{
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .auth-link {
+    margin-top: 1rem;
+    color: blue;
+  }
+  
+  .auth-link a {
+    color: green;
+    text-decoration: none;
+  }
+  
+  .auth-link a:hover {
+    text-decoration: underline;
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/signUp.css">.signUp-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+  
+  
+  }
+  
+  .auth-box {
+    background-color: rgba(35,47,62,255);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px white;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .auth-box h1 {
+    color: white !important;
+  }
+  
+  h2 {
+    margin-bottom: 1.5rem;
+    color:white;
+  }
+  
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: 1px solid white;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  
+  input:focus {
+    outline: none;
+    border-color: white;
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    background-color: rgba(19,25,33,255);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .auth-button:hover {
+    background-color:white;
+    color: rgba(19,25,33,255);
+  }
+  .error{
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .auth-link {
+    margin-top: 1rem;
+    color:rgb(254,187,16);
+  }
+  
+  .auth-link a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .auth-link a:hover {
+    text-decoration: underline;
+  }
+  .password-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.password-container input {
+  flex: 1;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #007bff;
+}
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/footer.css">.footer {
+  background-color: rgb(35, 47, 62);
+  padding: 3rem 0 0;
+  margin-top: 3rem;
+}
+
+.footer-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.footer-section h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.footer-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-section p {
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.footer-section ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-section ul a {
+  color:white;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-section ul a:hover {
+  color:white;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color:rgb(19, 25, 33);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.social-icons a:hover {
+  background-color: green;
+  color: white;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 1.5rem 0;
+  margin-top: 3rem;
+  border-top: 1px solid white;
+}
+
+.footer-bottom p {
+  color: white;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 2rem;
+    margin-top: 2rem;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminDashboard.css">.admin-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .dashboard-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(35,47,62,255);
+    margin: 0;
+  }
+  
+  .dashboard-welcome {
+    font-size: 1rem;
+    color: white;
+  }
+  
+  .dashboard-date {
+    font-size: 0.875rem;
+    color: white;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stat-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+  }
+  
+  .card-icon.products {
+    background-color: rgba(254, 186, 23, 0.1);
+    color: rgba(35,47,62,255);
+  }
+  
+  .card-icon.categories {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .card-icon.users {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .card-icon.orders {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .card-title {
+    font-size: 0.875rem;
+    color:rgba(19,25,33,255);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+  
+  .card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(35,47,62,255);
+    margin: 0.5rem 0;
+  }
+  
+  .card-link {
+    display: inline-block;
+    color: rgba(35,47,62,255);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .card-link:hover {
+    color: green;
+  }
+  
+  .dashboard-section {
+    margin-bottom: 2rem;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: rgba(35,47,62,255);
+    margin: 0;
+  }
+  
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  .action-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  
+  .action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    background-color: rgba(35,47,62,255);
+    color: white;
+  }
+  
+  .action-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color:rgba(35,47,62,255);
+    margin-bottom: 0.5rem;
+  }
+  
+  .action-description {
+    font-size: 0.875rem;
+    color: #6c757d;
+  }
+  
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  
+    .actions-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminProducts.css">.admin-products {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .products-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color:white;
+    margin: 0;
+  }
+  
+  .add-product-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color:white;
+    color: rgba(35,47,62,255);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-product-btn:hover {
+    background-color:rgba(19,25,33,255);
+    color: white;
+  }
+  
+  .add-product-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .products-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px whitesmoke;
+    overflow: hidden;
+  }
+  
+  .products-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .products-table th,
+  .products-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .products-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+  }
+  
+  .products-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .products-table tr:hover td {
+    background-color: lightslategray;
+  }
+  
+  .product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .product-name {
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+  }
+  
+  .product-price {
+    font-weight: 600;
+    color: #198754;
+  }
+  
+  .product-category {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    /*background-color: rgba(254, 186, 23, 0.1);*/
+    color: rgba(19,25,33,255);
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .product-featured {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .product-not-featured {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .edit-button,
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .edit-button {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .edit-button:hover {
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+  
+  .delete-button {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .delete-button:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+  }
+  
+  .product-form-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .product-form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+    margin-bottom: 1.5rem;
+  }
+  
+  .product-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: grid;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: #4e1f00;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #feba17;
+  }
+  
+  .form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+  
+  .form-group.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .form-group.checkbox input {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .image-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .add-button,
+  .remove-button {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  
+  .add-button {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .add-button:hover {
+    background-color: rgba(25, 135, 84, 0.2);
+  }
+  
+  .remove-button {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .remove-button:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .save-button,
+  .cancel-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .save-button {
+    background-color: #feba17;
+    color: #4e1f00;
+  }
+  
+  .save-button:hover {
+    background-color: #e5a912;
+  }
+  
+  .cancel-button {
+    background-color: #f8f9fa;
+    color: #6c757d;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e9ecef;
+  }
+  
+  .error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 992px) {
+    .products-table th:nth-child(3),
+    .products-table td:nth-child(3) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .products-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .products-table th:nth-child(4),
+    .products-table td:nth-child(4) {
+      display: none;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+    }
+  
+    .save-button,
+    .cancel-button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .products-table th:nth-child(5),
+    .products-table td:nth-child(5) {
+      display: none;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminCategories.css">.admin-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .categories-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+  }
+  
+  .add-category-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: white;
+    color: rgba(19,25,33,255);
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .add-category-btn:hover {
+    background-color: rgba(19,25,33,255);
+    color: white;
+  }
+  
+  .add-category-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .categories-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .categories-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .categories-table th,
+  .categories-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .categories-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+  }
+  
+  .categories-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .categories-table tr:hover td {
+    background-color: #f8f9fa;
+  }
+  
+  .category-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .category-name {
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+    
+  }
+  
+  .category-id {
+    font-family: monospace;
+    color: #6c757d;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .edit-button,
+  .delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .edit-button {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .edit-button:hover {
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+  
+  .delete-button {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .delete-button:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+  }
+  
+  .category-form-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .category-form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(19,25,33,255);
+    margin-bottom: 1.5rem;
+  }
+  
+  .category-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  .form-group {
+    display: grid;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: rgba(19,25,33,255);
+  }
+  
+  .form-group input {
+    padding: 0.75rem;
+    border: 1px solid rgba(19,25,33,255);
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: rgba(19,25,33,255);
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .save-button,
+  .cancel-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .save-button {
+    background-color: rgba(19,25,33,255);
+    color: white;
+  }
+  
+  .save-button:hover {
+    background-color: white;
+    color: rgba(19,25,33,255);
+  }
+  
+  .cancel-button {
+    background-color: rgba(19,25,33,255);
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e9ecef;
+    color: rgba(19,25,33,255);
+  }
+  
+  .error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .categories-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .form-actions {
+      flex-direction: column;
+    }
+  
+    .save-button,
+    .cancel-button {
+      width: 100%;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminUsers.css">.admin-users {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .users-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #4e1f00;
+    margin: 0;
+  }
+  
+  .users-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .users-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #4e1f00;
+  }
+  
+  .users-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .users-table tr:hover td {
+    background-color: #f8f9fa;
+  }
+  
+  .users-table tr.current-user td {
+    background-color: rgba(254, 186, 23, 0.05);
+  }
+  
+  .user-name {
+    font-weight: 600;
+    color: #4e1f00;
+  }
+  
+  .user-email {
+    color: #6c757d;
+  }
+  
+  .user-role {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .user-role.admin {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .user-role.user {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .promote-button,
+  .demote-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .promote-button {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .promote-button:hover {
+    background-color: rgba(25, 135, 84, 0.2);
+  }
+  
+  .demote-button {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+  }
+  
+  .demote-button:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+  }
+  
+  .self-user {
+    font-style: italic;
+    color: #6c757d;
+  }
+  
+  .error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .users-table th:nth-child(1),
+    .users-table td:nth-child(1) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .users-table th:nth-child(3),
+    .users-table td:nth-child(3) {
+      display: none;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminOrders.css">.admin-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .orders-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: green;
+    margin: 0;
+  }
+  
+  .orders-filter {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .filter-button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #6c757d;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .filter-button:hover {
+    border-color: #feba17;
+    color: #4e1f00;
+  }
+  
+  .filter-button.active {
+    background-color: #feba17;
+    border-color: #feba17;
+    color: #4e1f00;
+  }
+  
+  .orders-table-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .orders-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .orders-table th,
+  .orders-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .orders-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #4e1f00;
+  }
+  
+  .orders-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .orders-table tr:hover td {
+    background-color: #f8f9fa;
+  }
+  
+  .order-id {
+    font-family: monospace;
+    font-weight: 600;
+    color: #4e1f00;
+  }
+  
+  .order-date {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  .order-customer {
+    font-weight: 500;
+  }
+  
+  .order-total {
+    font-weight: 600;
+    color: #198754;
+  }
+  
+  .order-status {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .order-status.pending {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+  }
+  
+  .order-status.processing {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+  }
+  
+  .order-status.shipped {
+    background-color: rgba(13, 202, 240, 0.1);
+    color: #0dcaf0;
+  }
+  
+  .order-status.delivered {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+  }
+  
+  .order-status.cancelled {
+    background-color: rgba(108, 117, 125, 0.1);
+    color: #6c757d;
+  }
+  
+  .view-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+    border: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .view-button:hover {
+    background-color: rgba(13, 110, 253, 0.2);
+  }
+  
+  .empty-orders {
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+  }
+  
+  .empty-orders-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #ced4da;
+  }
+  
+  .empty-orders-message {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .empty-orders-description {
+    font-size: 0.875rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  @media (max-width: 992px) {
+    .orders-table th:nth-child(3),
+    .orders-table td:nth-child(3) {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .orders-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  
+    .orders-filter {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+  
+    .orders-table th:nth-child(4),
+    .orders-table td:nth-child(4) {
+      display: none;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminSidebar.css">.admin-sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: rgba(19,25,33,255);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-sidebar.collapsed {
+    width: 80px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color:white;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  /*arrow*/
+  .sidebar-toggle:hover {
+    background-color: white;
+    color: rgba(19,25,33,255);
+  }
+  
+  .sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+  }
+  
+  .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-nav li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+  
+  .sidebar-nav a:hover {
+    background-color: rgba(254, 186, 23, 0.1);
+    color: #feba17;
+  }
+  
+  .sidebar-nav a.active {
+    background-color: rgba(254, 186, 23, 0.2);
+    color: white;
+    border-left-color: white;
+  }
+  
+  .sidebar-nav a svg {
+    margin-right: 1rem;
+    min-width: 24px;
+  }
+  
+  .admin-sidebar.collapsed .sidebar-nav a span {
+    display: none;
+  }
+  
+  .admin-sidebar.collapsed .sidebar-title {
+    display: none;
+  }
+  
+  .sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color:white;
+    color: rgba(19,25,33,255);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+  }
+  
+  .user-details {
+    overflow: hidden;
+  }
+  
+  .user-name {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .user-role {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .sidebar-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .store-link,
+  .logout-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .store-link {
+    background-color: rgba(254, 186, 23, 0.1);
+    color: white;
+    text-decoration: none;
+  }
+  
+  .store-link:hover {
+    background-color: rgba(254, 186, 23, 0.2);
+  }
+  
+  .logout-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+  }
+  
+  .logout-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .admin-sidebar.collapsed .user-details,
+  .admin-sidebar.collapsed .sidebar-actions span {
+    display: none;
+  }
+  
+  .admin-sidebar.collapsed .sidebar-actions {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar.collapsed .user-info {
+    justify-content: center;
+  }
+  
+  .admin-sidebar.collapsed .user-avatar {
+    margin-right: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+    }
+  
+    .admin-sidebar.collapsed {
+      width: 100%;
+    }
+  
+    .sidebar-content {
+      max-height: 300px;
+    }
+  
+    .admin-sidebar.collapsed .sidebar-nav a span,
+    .admin-sidebar.collapsed .sidebar-title,
+    .admin-sidebar.collapsed .user-details,
+    .admin-sidebar.collapsed .sidebar-actions span {
+      display: block;
+    }
+  
+    .admin-sidebar.collapsed .user-info {
+      justify-content: flex-start;
+    }
+  
+    .admin-sidebar.collapsed .user-avatar {
+      margin-right: 0.75rem;
+    }
+  
+    .admin-sidebar.collapsed .sidebar-actions {
+      flex-direction: row;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/admin/adminLayout.css">.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: rgba(35,47,62,255);
+    transition: all 0.3s ease;
+  }
+  
+  .admin-content {
+    flex: 1;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .admin-content-wrapper {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .sidebar-collapsed .admin-content {
+    margin-left: 80px;
+  }
+  
+  @media (max-width: 768px) {
+    .admin-content-wrapper {
+      padding: 1rem;
+    }
+  
+    .admin-layout {
+      flex-direction: column;
+    }
+  
+    .sidebar-collapsed .admin-content {
+      margin-left: 0;
+    }
+  }
+  </style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/reset.css">/* Reset CSS */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1.5;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+</style><style type="text/css" data-vite-dev-id="C:/Users/Chishty Comp/Desktop/AmazonClone/frontend/src/styles/global.css">/* Global Styles */
+:root {
+  --primary-color: #3a86ff;
+  --primary-hover: #2a75ee;
+  --secondary-color: #ff006e;
+  --text-color: #333333;
+  --text-light: #666666;
+  --background: #ffffff;
+  --background-alt: #f8f9fa;
+  --border-color: #e1e4e8;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
+  color: var(--text-color);
+  background-color: var(--background);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.section {
+  padding: 3rem 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.section-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: rgb(19, 25, 33)s;
+}
+
+.view-all {
+  color: rgb(19, 25, 33);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color:rgb(19, 25, 33);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: rgb(19, 25, 33);   
+  color:white;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  color: rgb(19, 25, 33);
+  
+}
+
+.btn-secondary {
+  background-color: rgb(19, 25, 33);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: white;
+  color: rgb(19, 25, 33);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid black;
+  color: white;
+}
+
+.btn-outline:hover {
+  background-color: white;
+}
+
+/* Forms */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background-color: var(--background);
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: red;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .section {
+    padding: 2rem 0;
+  }
+}
+
+</style></head>
+  <body>
+    <div id="root"><div class="app"><div class="admin-layout sidebar-collapsed"><aside class="admin-sidebar collapsed"><div class="sidebar-header"><h2 class="sidebar-title">Admin Panel</h2><button class="sidebar-toggle"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button></div><div class="sidebar-content"><nav class="sidebar-nav"><ul><li><a class="" href="http://localhost:5173/admin" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span></a></li><li><a class="active" href="http://localhost:5173/admin/products" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg><span>Products</span></a></li><li><a class="" href="http://localhost:5173/admin/categories" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg><span>Categories</span></a></li><li><a class="" href="http://localhost:5173/admin/users" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><span>Users</span></a></li><li><a class="" href="http://localhost:5173/admin/orders" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg><span>Orders</span></a></li></ul></nav></div><div class="sidebar-footer"><div class="user-info"><div class="user-avatar">h</div><div class="user-details"><div class="user-name">hadia</div><div class="user-role">Administrator</div></div></div><div class="sidebar-actions"><a class="store-link" href="http://localhost:5173/" data-discover="true"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Store</span></a><button class="logout-button"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Logout</span></button></div></div></aside><div class="admin-content"><div class="admin-content-wrapper"><div class="admin-products"><div class="products-header"><h1 class="products-title">Products</h1><button class="add-product-btn"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Product</button></div><div class="product-form-container"><h2 class="product-form-title">Edit Product</h2><form class="product-form"><div class="form-group"><label for="name">Product Name</label><input id="name" required="" type="text" value="Men Jogging Shoes" name="name"></div><div class="form-group"><label for="price">Price</label><input id="price" min="0.01" step="0.01" required="" type="number" value="1313" name="price"></div><div class="form-group"><label for="description">Description</label><textarea id="description" name="description" required="">gjhfaj dfcaj</textarea></div><div class="form-group"><label for="category">Category</label><select id="category" name="category" required=""><option value="">Select a category</option><option value="shoes">bag</option><option value="bags">bags</option></select></div><div class="form-group"><label for="size">Size</label><input id="size" required="" type="text" name="size"></div><div class="form-group checkbox"><input id="featured" type="checkbox" checked="" name="featured"><label for="featured">Featured Product</label></div><div class="form-group"><label>Product Images</label><div class="image-input-group"><input placeholder="Image URL" type="text" value="https://png.pngtree.com/back_origin_pic/04/63/68/bd6de885b7268afbe7d1018ebb3c46ff.jpg"><button type="button" class="remove-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Remove</button></div><div class="image-input-group"><input placeholder="Image URL" type="text" value="https://th.bing.com/th/id/R.4414333b37828ff48249bd4c022ce89f?rik=f6MqiPMNIJc%2fzw&amp;riu=http%3a%2f%2fclipart-library.com%2fimages_k%2fshoes-transparent%2fshoes-transparent-21.png&amp;ehk=jQ1%2bV8wZ19lDYce6H6BQVtMqASEu4SdzQHKYTNRiqJw%3d&amp;risl=1&amp;pid=ImgRaw&amp;r=0"><button type="button" class="remove-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Remove</button></div><button type="button" class="add-button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add Another Image</button></div><div class="form-actions"><button type="submit" class="save-button">Update Product</button><button type="button" class="cancel-button">Cancel</button></div></form></div><div class="products-table-container"><table class="products-table"><thead><tr><th>Image</th><th>Name</th><th>Description</th><th>Price</th><th>Category</th><th>Size</th><th>Featured</th><th>Actions</th></tr></thead><tbody><tr><td><img alt="Men Jogging Shoes" class="product-thumbnail" src="./Amazon clone_files/R.4414333b37828ff48249bd4c022ce89f"></td><td class="product-name">Men Jogging Shoes</td><td>gjhfaj dfcaj...</td><td class="product-price">$1313.00</td><td><span class="product-category">bag</span></td><td></td><td><span class="product-featured">Yes</span></td><td><div class="action-buttons"><button class="edit-button" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button class="delete-button" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></div></td></tr><tr><td><img alt="bags" class="product-thumbnail" src="./Amazon clone_files/black-bag-with-bag_906185-13929.jpg"></td><td class="product-name">bags</td><td>agdj hgvajsdgfjf...</td><td class="product-price">$11.00</td><td><span class="product-category">bags</span></td><td></td><td><span class="product-not-featured">No</span></td><td><div class="action-buttons"><button class="edit-button" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button class="delete-button" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></div></td></tr><tr><td><img alt="T Shirt" class="product-thumbnail" src="./Amazon clone_files/black-bag-with-bag_906185-13929.jpg"></td><td class="product-name">T Shirt</td><td>ut itfoiasdf...</td><td class="product-price">$14.00</td><td><span class="product-category">bags</span></td><td>XL</td><td><span class="product-not-featured">No</span></td><td><div class="action-buttons"><button class="edit-button" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button><button class="delete-button" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button></div></td></tr></tbody></table></div></div></div></div></div></div></div>
+    <script type="module" src="./Amazon clone_files/main.jsx"></script>
+  
+
+
+
+
+</body></html>
