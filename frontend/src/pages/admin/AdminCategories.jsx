@@ -10,6 +10,7 @@ function AdminCategories() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
   // Form state
   const [showForm, setShowForm] = useState(false)
@@ -20,23 +21,27 @@ function AdminCategories() {
   })
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true)
-        const response = await adminAPI.getAdminCategories()
-        setCategories(response.data.categories)
-      } catch (err) {
-        setError("Failed to load categories")
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
+    fetchCategories()
+  }, [])
 
-    if (user && user._id) {
-      fetchCategories()
+  const fetchCategories = async () => {
+    try {
+      setLoading(true)
+      setError("")
+      const response = await adminAPI.getAdminCategories()
+      
+      if (response.data.success) {
+        setCategories(response.data.categories || [])
+      } else {
+        setError("Failed to load categories")
+      }
+    } catch (err) {
+      setError("Failed to load categories: " + (err.response?.data?.message || err.message))
+      console.error("Error fetching categories:", err)
+    } finally {
+      setLoading(false)
     }
-  }, [user])
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -52,6 +57,8 @@ function AdminCategories() {
       image: "",
     })
     setEditingCategory(null)
+    setError("")
+    setSuccess("")
   }
 
   const handleAddCategory = () => {
@@ -64,58 +71,101 @@ function AdminCategories() {
     setEditingCategory(category)
     setFormData({
       name: category.name,
-      image: category.image,
+      image: category.image || "",
     })
+    setError("")
+    setSuccess("")
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setError("")
+    setSuccess("")
+
+    // Validate form data
+    if (!formData.name.trim()) {
+      setError("Category name is required")
+      return
+    }
 
     try {
       const categoryData = {
-        ...formData,
+        name: formData.name.trim(),
+        image: formData.image.trim() || "",
       }
 
       let response
 
       if (editingCategory) {
-        response = await adminAPI.updateCategory(editingCategory.id, categoryData)
-        setCategories(categories.map((c) => (c.id === editingCategory.id ? response.data.category : c)))
+        // Use _id for MongoDB operations
+        response = await adminAPI.updateCategory(editingCategory._id, categoryData)
+        
+        if (response.data.success) {
+          setCategories(categories.map((c) => 
+            c._id === editingCategory._id ? response.data.category : c
+          ))
+          setSuccess("Category updated successfully")
+        }
       } else {
         response = await adminAPI.createCategory(categoryData)
-        setCategories([...categories, response.data.category])
+        
+        if (response.data.success) {
+          setCategories([...categories, response.data.category])
+          setSuccess("Category created successfully")
+        }
       }
 
       setShowForm(false)
       resetForm()
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSuccess(""), 3000)
+
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to save category")
-      console.error(err)
+      const errorMessage = err.response?.data?.message || "Failed to save category"
+      setError(errorMessage)
+      console.error("Error saving category:", err)
     }
   }
 
-  const handleDeleteCategory = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?")) {
+  const handleDeleteCategory = async (categoryId) => {
+    if (!window.confirm("Are you sure you want to delete this category? This action cannot be undone.")) {
       return
     }
 
     try {
-      await adminAPI.deleteCategory(id)
-      setCategories(categories.filter((c) => c.id !== id))
+      setError("")
+      const response = await adminAPI.deleteCategory(categoryId)
+      
+      if (response.data.success) {
+        setCategories(categories.filter((c) => c._id !== categoryId))
+        setSuccess("Category deleted successfully")
+        
+        // Clear success message after 3 seconds
+        setTimeout(() => setSuccess(""), 3000)
+      }
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to delete category")
-      console.error(err)
+      const errorMessage = err.response?.data?.message || "Failed to delete category"
+      setError(errorMessage)
+      console.error("Error deleting category:", err)
     }
   }
 
   if (loading) {
-    return <div className="admin-categories loading">Loading categories...</div>
+    return (
+      <div className="admin-categories">
+        <div className="loading-state">
+          <div className="loading-spinner"></div>
+          <p>Loading categories...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="admin-categories">
       <div className="categories-header">
-        <h1 className="categories-title">Categories</h1>
+        <h1 className="categories-title">Categories Management</h1>
         <button className="add-category-btn" onClick={handleAddCategory}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -135,76 +185,132 @@ function AdminCategories() {
         </button>
       </div>
 
+      {/* Messages */}
       {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message">{success}</div>}
 
       {showForm && (
-        <div className="category-form-container">
-          <h2 className="category-form-title">{editingCategory ? "Edit Category" : "Add New Category"}</h2>
-          <form onSubmit={handleSubmit} className="category-form">
-            <div className="form-group">
-              <label htmlFor="name">Category Name</label>
-              <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} required />
-            </div>
-            
-
-            <div className="form-group">
-              <label htmlFor="image">Image URL</label>
-              <input
-                type="text"
-                id="image"
-                name="image"
-                value={formData.image}
-                onChange={handleInputChange}
-                placeholder="/images/categories/your-category.jpg"
-              />
-            </div>
-
-            <div className="form-actions">
-              <button type="submit" className="save-button">
-                {editingCategory ? "Update Category" : "Add Category"}
-              </button>
-              <button
-                type="button"
-                className="cancel-button"
+        <div className="category-form-overlay">
+          <div className="category-form-container">
+            <div className="form-header">
+              <h2 className="category-form-title">
+                {editingCategory ? "Edit Category" : "Add New Category"}
+              </h2>
+              <button 
+                className="close-form-btn"
                 onClick={() => {
                   setShowForm(false)
                   resetForm()
                 }}
               >
-                Cancel
+                ×
               </button>
             </div>
-          </form>
+            
+            <form onSubmit={handleSubmit} className="category-form">
+              <div className="form-group">
+                <label htmlFor="name">Category Name *</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name" 
+                  value={formData.name} 
+                  onChange={handleInputChange} 
+                  required 
+                  placeholder="Enter category name"
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="image">Image URL</label>
+                <input
+                  type="url"
+                  id="image"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleInputChange}
+                  placeholder="https://example.com/image.jpg or /images/category.jpg"
+                />
+                {formData.image && (
+                  <div className="image-preview">
+                    <img 
+                      src={formData.image} 
+                      alt="Preview" 
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="form-actions">
+                <button type="submit" className="save-button">
+                  {editingCategory ? "Update Category" : "Create Category"}
+                </button>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={() => {
+                    setShowForm(false)
+                    resetForm()
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
       <div className="categories-table-container">
-        <table className="categories-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <tr key={category.id}>
-                  <td className="category-id">{category.id}</td>
+        {categories.length > 0 ? (
+          <table className="categories-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Created At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map((category) => (
+                <tr key={category._id}>
                   <td>
-                    <img
-                      src={category.image || "/placeholder.svg"}
-                      alt={category.name}
-                      className="category-thumbnail"
-                    />
+                    <div className="category-image">
+                      <img
+                        src={category.image || "/api/placeholder/50/50"}
+                        alt={category.name}
+                        className="category-thumbnail"
+                        onError={(e) => {
+                          e.target.src = "/api/placeholder/50/50"
+                        }}
+                      />
+                    </div>
                   </td>
-                  <td className="category-name">{category.name}</td>
-
+                  <td className="category-name">
+                    <strong>{category.name}</strong>
+                  </td>
+                  <td className="category-id">
+                    <code>{category._id}</code>
+                  </td>
+                  <td className="category-date">
+                    {category.createdAt ? new Date(category.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    }) : 'N/A'}
+                  </td>
                   <td>
                     <div className="action-buttons">
-                      <button className="edit-button" onClick={() => handleEditCategory(category)} title="Edit">
+                      <button 
+                        className="edit-button" 
+                        onClick={() => handleEditCategory(category)} 
+                        title="Edit Category"
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -219,11 +325,12 @@ function AdminCategories() {
                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                         </svg>
+                        Edit
                       </button>
                       <button
                         className="delete-button"
-                        onClick={() => handleDeleteCategory(category.id)}
-                        title="Delete"
+                        onClick={() => handleDeleteCategory(category._id)}
+                        title="Delete Category"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -241,20 +348,40 @@ function AdminCategories() {
                           <line x1="10" y1="11" x2="10" y2="17"></line>
                           <line x1="14" y1="11" x2="14" y2="17"></line>
                         </svg>
+                        Delete
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="no-data">
-                  No categories found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="empty-categories">
+            <div className="empty-categories-icon">📂</div>
+            <h3 className="empty-categories-message">No categories found</h3>
+            <p className="empty-categories-description">
+              Start by creating your first category to organize your products.
+            </p>
+            <button onClick={handleAddCategory} className="add-category-btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Create First Category
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

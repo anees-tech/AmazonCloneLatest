@@ -22,7 +22,15 @@ function Login() {
       console.log(response);
       if (response.data.success) {
         login(response.data.user);
-        navigate("/");
+
+        // Check if there's a redirect path stored
+        const redirectPath = localStorage.getItem("redirectAfterLogin");
+        if (redirectPath) {
+          localStorage.removeItem("redirectAfterLogin");
+          navigate(redirectPath);
+        } else {
+          navigate("/");
+        }
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
@@ -52,7 +60,9 @@ function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit" className="auth-button">Login</button>
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
           <p className="auth-link">
             <Link to="/forgot-password">Forgot Password?</Link>
           </p>

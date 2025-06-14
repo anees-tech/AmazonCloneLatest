@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getProductById } from '../api/productApi'
 import { useCart } from '../context/CartContext'
+import API from '../api/axios'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import './ProductDetailsPage.css'
@@ -12,6 +13,8 @@ const ProductDetailsPage = () => {
   const { addToCart, isInCart, getItemQuantity } = useCart()
   
   const [product, setProduct] = useState(null)
+  const [reviews, setReviews] = useState([])
+  const [reviewStats, setReviewStats] = useState({ totalReviews: 0, averageRating: 0 })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [selectedImage, setSelectedImage] = useState(0)
@@ -26,6 +29,9 @@ const ProductDetailsPage = () => {
         const productData = await getProductById(id)
         console.log('Product fetched:', productData)
         setProduct(productData)
+        
+        // Fetch reviews
+        await fetchReviews(id)
       } catch (err) {
         console.error('Error fetching product:', err)
         setError('Failed to load product details')
@@ -38,6 +44,33 @@ const ProductDetailsPage = () => {
       fetchProduct()
     }
   }, [id])
+
+  const fetchReviews = async (productId) => {
+    try {
+      const response = await API.get(`/reviews/product/${productId}`)
+      if (response.data.success) {
+        setReviews(response.data.reviews)
+        setReviewStats({
+          totalReviews: response.data.totalReviews,
+          averageRating: response.data.averageRating
+        })
+      }
+    } catch (error) {
+      console.error('Error fetching reviews:', error)
+    }
+  }
+
+  const renderStars = (rating) => {
+    return (
+      <div className="pdp-rating-stars">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span key={star} className={`pdp-star ${star <= rating ? 'pdp-star-filled' : ''}`}>
+            ⭐
+          </span>
+        ))}
+      </div>
+    )
+  }
 
   const handleQuantityChange = (type) => {
     if (type === 'increment') {
@@ -72,9 +105,9 @@ const ProductDetailsPage = () => {
     return (
       <>
         <Navbar />
-        <div className="loading-container">
-          <div className="loading-content">
-            <div className="loading-spinner"></div>
+        <div className="pdp-loading-wrapper">
+          <div className="pdp-loading-content">
+            <div className="pdp-loading-spinner"></div>
             <h2>Loading Product Details...</h2>
             <p>Please wait while we fetch the product information</p>
           </div>
@@ -88,13 +121,13 @@ const ProductDetailsPage = () => {
     return (
       <>
         <Navbar />
-        <div className="error-container">
-          <div className="error-content">
-            <div className="error-icon">❌</div>
+        <div className="pdp-error-wrapper">
+          <div className="pdp-error-content">
+            <div className="pdp-error-icon">❌</div>
             <h2>Product Not Found</h2>
             <p>{error || 'The product you are looking for does not exist'}</p>
             <button 
-              className="back-btn"
+              className="pdp-back-btn"
               onClick={() => navigate('/products')}
             >
               Back to Products
@@ -117,48 +150,48 @@ const ProductDetailsPage = () => {
   return (
     <>
       <Navbar />
-      <div className="product-details-page">
+      <div className="pdp-main-wrapper">
         {/* Breadcrumb */}
-        <div className="breadcrumb">
-          <div className="container">
-            <nav className="breadcrumb-nav">
-              <button onClick={() => navigate('/')} className="breadcrumb-link">Home</button>
-              <span className="breadcrumb-separator">›</span>
-              <button onClick={() => navigate('/products')} className="breadcrumb-link">Products</button>
-              <span className="breadcrumb-separator">›</span>
-              <span className="breadcrumb-current">{product.name}</span>
+        <div className="pdp-breadcrumb">
+          <div className="pdp-container">
+            <nav className="pdp-breadcrumb-nav">
+              <button onClick={() => navigate('/')} className="pdp-breadcrumb-link">Home</button>
+              <span className="pdp-breadcrumb-separator">›</span>
+              <button onClick={() => navigate('/products')} className="pdp-breadcrumb-link">Products</button>
+              <span className="pdp-breadcrumb-separator">›</span>
+              <span className="pdp-breadcrumb-current">{product.name}</span>
             </nav>
           </div>
         </div>
 
-        <div className="container">
-          <div className="product-container">
+        <div className="pdp-container">
+          <div className="pdp-product-layout">
             {/* Product Images */}
-            <div className="product-images">
-              <div className="main-image">
+            <div className="pdp-images-section">
+              <div className="pdp-main-image-wrapper">
                 <img 
                   src={productImages[selectedImage]} 
                   alt={product.name}
-                  className="main-product-image"
+                  className="pdp-main-product-image"
                 />
                 {product.featured && (
-                  <div className="featured-badge">
+                  <div className="pdp-featured-badge">
                     <span>⭐ Featured</span>
                   </div>
                 )}
                 {inCart && (
-                  <div className="in-cart-badge">
+                  <div className="pdp-in-cart-badge">
                     <span>🛒 In Cart ({cartQuantity})</span>
                   </div>
                 )}
               </div>
               
               {productImages.length > 1 && (
-                <div className="thumbnail-images">
+                <div className="pdp-thumbnail-grid">
                   {productImages.map((image, index) => (
                     <button
                       key={index}
-                      className={`thumbnail ${selectedImage === index ? 'active' : ''}`}
+                      className={`pdp-thumbnail ${selectedImage === index ? 'pdp-thumbnail-active' : ''}`}
                       onClick={() => setSelectedImage(index)}
                     >
                       <img src={image} alt={`${product.name} ${index + 1}`} />
@@ -169,62 +202,53 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Product Info */}
-            <div className="product-info">
-              <div className="product-header">
-                <h1 className="product-title">{product.name}</h1>
-                <div className="product-rating">
-                  <div className="stars">
-                    {[...Array(5)].map((_, i) => (
-                      <span 
-                        key={i} 
-                        className={`star ${i < (product.rating || 4) ? 'filled' : ''}`}
-                      >
-                        ⭐
-                      </span>
-                    ))}
-                  </div>
-                  <span className="rating-text">({product.rating || 4.0}/5)</span>
-                  <span className="review-count">({product.reviewCount || 0} reviews)</span>
+            <div className="pdp-product-info">
+              <div className="pdp-product-header">
+                <h1 className="pdp-product-title">{product.name}</h1>
+                <div className="pdp-product-rating">
+                  {renderStars(reviewStats.averageRating || product.rating || 4)}
+                  <span className="pdp-rating-text">({reviewStats.averageRating || product.rating || 4.0}/5)</span>
+                  <span className="pdp-review-count">({reviewStats.totalReviews || product.reviewCount || 0} reviews)</span>
                 </div>
               </div>
 
-              <div className="product-price">
-                <span className="current-price">${product.price}</span>
+              <div className="pdp-product-pricing">
+                <span className="pdp-current-price">${product.price}</span>
                 {product.originalPrice && product.originalPrice > product.price && (
                   <>
-                    <span className="original-price">${product.originalPrice}</span>
-                    <span className="discount">
+                    <span className="pdp-original-price">${product.originalPrice}</span>
+                    <span className="pdp-discount-badge">
                       {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
                     </span>
                   </>
                 )}
               </div>
 
-              <div className="product-stock">
-                <span className={`stock-status ${product.stock > 0 ? 'in-stock' : 'out-of-stock'}`}>
+              <div className="pdp-stock-info">
+                <span className={`pdp-stock-status ${product.stock > 0 ? 'pdp-in-stock' : 'pdp-out-of-stock'}`}>
                   {product.stock > 0 ? `✅ In Stock (${product.stock} available)` : '❌ Out of Stock'}
                 </span>
               </div>
 
-              <div className="product-category">
-                <span className="category-label">Category:</span>
-                <span className="category-name">{product.category?.name || 'General'}</span>
+              <div className="pdp-category-info">
+                <span className="pdp-category-label">Category:</span>
+                <span className="pdp-category-name">{product.category?.name || 'General'}</span>
               </div>
 
               {/* Quantity Selector */}
-              <div className="quantity-section">
-                <label className="quantity-label">Quantity:</label>
-                <div className="quantity-controls">
+              <div className="pdp-quantity-section">
+                <label className="pdp-quantity-label">Quantity:</label>
+                <div className="pdp-quantity-controls">
                   <button 
-                    className="quantity-btn"
+                    className="pdp-quantity-btn"
                     onClick={() => handleQuantityChange('decrement')}
                     disabled={quantity <= 1}
                   >
                     -
                   </button>
-                  <span className="quantity-display">{quantity}</span>
+                  <span className="pdp-quantity-display">{quantity}</span>
                   <button 
-                    className="quantity-btn"
+                    className="pdp-quantity-btn"
                     onClick={() => handleQuantityChange('increment')}
                     disabled={quantity >= product.stock}
                   >
@@ -234,41 +258,41 @@ const ProductDetailsPage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="action-buttons">
+              <div className="pdp-action-buttons">
                 <button 
-                  className={`add-to-cart-btn ${inCart ? 'in-cart' : ''}`}
+                  className={`pdp-add-to-cart-btn ${inCart ? 'pdp-in-cart' : ''}`}
                   onClick={handleAddToCart}
                   disabled={product.stock === 0}
                 >
-                  <span className="btn-icon">🛒</span>
+                  <span className="pdp-btn-icon">🛒</span>
                   {inCart ? `In Cart (${cartQuantity})` : 'Add to Cart'}
                 </button>
                 <button 
-                  className="buy-now-btn"
+                  className="pdp-buy-now-btn"
                   onClick={handleBuyNow}
                   disabled={product.stock === 0}
                 >
-                  <span className="btn-icon">⚡</span>
+                  <span className="pdp-btn-icon">⚡</span>
                   Buy Now
                 </button>
               </div>
 
               {/* Product Features */}
-              <div className="product-features">
-                <div className="feature">
-                  <span className="feature-icon">🚚</span>
+              <div className="pdp-features-grid">
+                <div className="pdp-feature-item">
+                  <span className="pdp-feature-icon">🚚</span>
                   <span>Free Shipping</span>
                 </div>
-                <div className="feature">
-                  <span className="feature-icon">↩️</span>
+                <div className="pdp-feature-item">
+                  <span className="pdp-feature-icon">↩️</span>
                   <span>30-Day Returns</span>
                 </div>
-                <div className="feature">
-                  <span className="feature-icon">🛡️</span>
+                <div className="pdp-feature-item">
+                  <span className="pdp-feature-icon">🛡️</span>
                   <span>1 Year Warranty</span>
                 </div>
-                <div className="feature">
-                  <span className="feature-icon">💳</span>
+                <div className="pdp-feature-item">
+                  <span className="pdp-feature-icon">💳</span>
                   <span>Secure Payment</span>
                 </div>
               </div>
@@ -276,84 +300,103 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* Product Details Tabs */}
-          <div className="product-tabs">
-            <div className="tab-headers">
+          <div className="pdp-tabs-wrapper">
+            <div className="pdp-tab-headers">
               <button 
-                className={`tab-header ${activeTab === 'description' ? 'active' : ''}`}
+                className={`pdp-tab-header ${activeTab === 'description' ? 'pdp-tab-active' : ''}`}
                 onClick={() => setActiveTab('description')}
               >
                 Description
               </button>
               <button 
-                className={`tab-header ${activeTab === 'specifications' ? 'active' : ''}`}
+                className={`pdp-tab-header ${activeTab === 'specifications' ? 'pdp-tab-active' : ''}`}
                 onClick={() => setActiveTab('specifications')}
               >
                 Specifications
               </button>
               <button 
-                className={`tab-header ${activeTab === 'reviews' ? 'active' : ''}`}
+                className={`pdp-tab-header ${activeTab === 'reviews' ? 'pdp-tab-active' : ''}`}
                 onClick={() => setActiveTab('reviews')}
               >
-                Reviews
+                Reviews ({reviewStats.totalReviews})
               </button>
             </div>
 
-            <div className="tab-content">
+            <div className="pdp-tab-content">
               {activeTab === 'description' && (
-                <div className="tab-panel">
+                <div className="pdp-tab-panel">
                   <h3>Product Description</h3>
                   <p>{product.description || 'No description available for this product.'}</p>
                 </div>
               )}
 
               {activeTab === 'specifications' && (
-                <div className="tab-panel">
+                <div className="pdp-tab-panel">
                   <h3>Specifications</h3>
-                  <div className="specifications">
-                    <div className="spec-item">
-                      <span className="spec-label">Brand:</span>
-                      <span className="spec-value">{product.brand || 'Generic'}</span>
+                  <div className="pdp-specs-list">
+                    <div className="pdp-spec-item">
+                      <span className="pdp-spec-label">Brand:</span>
+                      <span className="pdp-spec-value">{product.brand || 'Generic'}</span>
                     </div>
-                    <div className="spec-item">
-                      <span className="spec-label">SKU:</span>
-                      <span className="spec-value">{product._id}</span>
+                    <div className="pdp-spec-item">
+                      <span className="pdp-spec-label">SKU:</span>
+                      <span className="pdp-spec-value">{product._id}</span>
                     </div>
-                    <div className="spec-item">
-                      <span className="spec-label">Weight:</span>
-                      <span className="spec-value">{product.weight || 'N/A'}</span>
+                    <div className="pdp-spec-item">
+                      <span className="pdp-spec-label">Weight:</span>
+                      <span className="pdp-spec-value">{product.weight || 'N/A'}</span>
                     </div>
-                    <div className="spec-item">
-                      <span className="spec-label">Dimensions:</span>
-                      <span className="spec-value">{product.dimensions || 'N/A'}</span>
+                    <div className="pdp-spec-item">
+                      <span className="pdp-spec-label">Dimensions:</span>
+                      <span className="pdp-spec-value">{product.dimensions || 'N/A'}</span>
                     </div>
                   </div>
                 </div>
               )}
 
               {activeTab === 'reviews' && (
-                <div className="tab-panel">
+                <div className="pdp-tab-panel">
                   <h3>Customer Reviews</h3>
-                  <div className="reviews-summary">
-                    <div className="rating-overview">
-                      <div className="avg-rating">
-                        <span className="rating-number">{product.rating || 4.0}</span>
-                        <div className="rating-stars">
-                          {[...Array(5)].map((_, i) => (
-                            <span 
-                              key={i} 
-                              className={`star ${i < (product.rating || 4) ? 'filled' : ''}`}
-                            >
-                              ⭐
-                            </span>
-                          ))}
-                        </div>
-                        <span className="total-reviews">Based on {product.reviewCount || 0} reviews</span>
+                  <div className="pdp-reviews-summary">
+                    <div className="pdp-rating-overview">
+                      <div className="pdp-avg-rating">
+                        <span className="pdp-rating-number">{reviewStats.averageRating || 0}</span>
+                        {renderStars(reviewStats.averageRating || 0)}
+                        <span className="pdp-total-reviews">Based on {reviewStats.totalReviews} reviews</span>
                       </div>
                     </div>
                   </div>
-                  <div className="no-reviews">
-                    <p>No reviews yet. Be the first to review this product!</p>
-                  </div>
+                  
+                  {reviews.length === 0 ? (
+                    <div className="pdp-no-reviews">
+                      <p>No reviews yet. Be the first to review this product!</p>
+                    </div>
+                  ) : (
+                    <div className="pdp-reviews-list">
+                      {reviews.map((review) => (
+                        <div key={review._id} className="pdp-review-item">
+                          <div className="pdp-review-header">
+                            <div className="pdp-reviewer-info">
+                              <span className="pdp-reviewer-name">
+                                {review.user.name} {review.user.lastName}
+                              </span>
+                              {review.verified && (
+                                <span className="pdp-verified-badge">✅ Verified Purchase</span>
+                              )}
+                            </div>
+                            <span className="pdp-review-date">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="pdp-review-rating">
+                            {renderStars(review.rating)}
+                          </div>
+                          <h4 className="pdp-review-title">{review.title}</h4>
+                          <p className="pdp-review-comment">{review.comment}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>

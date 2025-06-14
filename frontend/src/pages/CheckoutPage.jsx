@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCart } from "../context/CartContext"
+import { useAuth } from "../context/AuthContext"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import "./CheckoutPage.css"
@@ -10,6 +11,7 @@ import "./CheckoutPage.css"
 const CheckoutPage = () => {
   const navigate = useNavigate()
   const { items, getTotalItems, getTotalPrice, clearCart } = useCart()
+  const { user } = useAuth()
 
   const [formData, setFormData] = useState({
     // Shipping Information
@@ -37,6 +39,27 @@ const CheckoutPage = () => {
   const [sameAsShipping, setSameAsShipping] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
 
+  // Check if user is logged in
+  useEffect(() => {
+    if (!user) {
+      // Store the current path so user can return after login
+      localStorage.setItem('redirectAfterLogin', '/checkout')
+      navigate('/login')
+    }
+  }, [user, navigate])
+
+  // Pre-fill form with user data if available
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        firstName: user.name || "",
+        lastName: user.lastName || "",
+        email: user.email || "",
+      }))
+    }
+  }, [user])
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -50,12 +73,19 @@ const CheckoutPage = () => {
     setIsProcessing(true)
 
     try {
+      // Double check user is still logged in
+      if (!user || !user._id) {
+        alert("Please login first to place an order")
+        navigate("/login")
+        return
+      }
+
       // Generate a unique order number
       const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
 
       // Prepare order data
       const orderData = {
-        orderNumber: orderNumber, // Add this line
+        orderNumber: orderNumber,
         items: items.map((item) => ({
           product: item._id,
           name: item.name,
@@ -87,7 +117,7 @@ const CheckoutPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "User-ID": JSON.parse(localStorage.getItem("user"))?._id,
+          "User-ID": user._id,
         },
         body: JSON.stringify(orderData),
       })
@@ -119,6 +149,24 @@ const CheckoutPage = () => {
   const shipping = 0 // Free shipping
   const total = subtotal + tax + shipping
 
+  // Show loading state while checking authentication
+  if (!user) {
+    return (
+      <>
+        <Navbar />
+        <div className="checkout-page">
+          <div className="container">
+            <div className="loading-state">
+              <div className="loading-spinner"></div>
+              <p>Checking authentication...</p>
+            </div>
+          </div>
+        </div>
+        <Footer />
+      </>
+    )
+  }
+
   if (items.length === 0) {
     return (
       <>
@@ -147,6 +195,9 @@ const CheckoutPage = () => {
         <div className="container">
           <div className="checkout-header">
             <h1>Checkout</h1>
+            <div className="user-info">
+              <p>Logged in as: <strong>{user.email}</strong></p>
+            </div>
             <div className="checkout-steps">
               <div className="step active">
                 <span className="step-number">1</span>

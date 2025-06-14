@@ -40,7 +40,7 @@ function Navbar() {
               </Link>
             </li>
             <li>
-              <Link to="/producs" onClick={() => setMobileMenuOpen(false)}>
+              <Link to="/products" onClick={() => setMobileMenuOpen(false)}>
                 Products
               </Link>
             </li>
@@ -61,6 +61,9 @@ function Navbar() {
                 Contact
               </Link>
             </li>
+            {user && (
+              <Link to="/dashboard" className="nav-link">Dashboard</Link>
+            )}
           </ul>
         </nav>
 

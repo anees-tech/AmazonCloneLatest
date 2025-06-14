@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const Order = require("../models/Order")
 const User = require("../models/User")
+const mongoose = require("mongoose")
 
 // Middleware to check if user is authenticated
 const isAuth = (req, res, next) => {
@@ -14,19 +15,27 @@ const isAuth = (req, res, next) => {
 }
 
 // Create new order
-router.post("/", isAuth, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    // Generate a unique order number
-    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+    // Extract user ID from header
+    const userId = req.headers["user-id"]
 
-    const { items, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalAmount, notes } = req.body
-
-    if (!items || items.length === 0) {
-      return res.status(400).json({ success: false, message: "No order items" })
+    // Check if user ID exists
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "User ID is required. Please login first." })
     }
 
+    // Check if user ID is valid
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ success: false, message: "Invalid user ID format" })
+    }
+
+    const { orderNumber, items, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalAmount, notes } = req.body
+
+    // Create new order with the user ID from header
     const order = new Order({
-      user: req.userId,
+      user: userId, // Use the extracted user ID
+      orderNumber,
       items,
       shippingAddress,
       paymentMethod,
@@ -34,17 +43,11 @@ router.post("/", isAuth, async (req, res) => {
       taxPrice,
       shippingPrice,
       totalAmount,
-      notes,
-      orderNumber: orderNumber, // Add this line
+      notes: notes || "",
     })
 
-    const createdOrder = await order.save()
-
-    res.status(201).json({
-      success: true,
-      message: "Order created successfully",
-      order: createdOrder,
-    })
+    const savedOrder = await order.save()
+    res.status(201).json({ success: true, order: savedOrder })
   } catch (error) {
     console.error("Create order error:", error)
     res.status(500).json({ success: false, message: "Server error" })

@@ -8,7 +8,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard"
 import AdminProducts from "./pages/admin/AdminProducts"
 import AdminCategories from "./pages/admin/AdminCategories"
 import AdminUsers from "./pages/admin/AdminUsers"
-import AdminOrders from "./pages/admin/AdminOrder"
+import AdminOrders from "./pages/admin/AdminOrders"
 import AdminProtectedRoutes from "./components/AdminRoute"
 import AdminLayout from "./components/admin/AdminLayout"
 import AllProductsPage from "./pages/AllProductsPage"
@@ -19,6 +19,8 @@ import OrderSuccessPage from "./pages/OrderSuccessPage"
 import ErrorBoundary from "./components/ErrorBoundary"
 import { CartProvider } from "./context/CartContext"
 import ForgotPassword from "./pages/ForgotPasswordPage"
+import UserDashboard from "./pages/UserDashboard"
+import OrderDetailsPage from "./pages/OrderDetailsPage"
 
 function App() {
   return (
@@ -79,6 +81,16 @@ function App() {
                 </ErrorBoundary>
               }
             />
+
+            <Route
+              path="/order/:orderId"
+              element={
+                <ErrorBoundary>
+                  <OrderDetailsPage />
+                </ErrorBoundary>
+              }
+            />
+
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route
               path="/order-success"
@@ -98,6 +110,7 @@ function App() {
                 </ErrorBoundary>
               }
             />
+            <Route path="/dashboard" element={<UserDashboard />} />
 
             {/* Admin Routes */}
             <Route

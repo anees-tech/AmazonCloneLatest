@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useAuth } from "../../context/AuthContext"
-import { adminAPI } from "../../api/axios"
+import { adminAPI } from "../../api/adminApi" // Changed from axios to adminApi
 import "../../styles/admin/adminUsers.css"
 import EditUserModal from "../../components/admin/EditUserModal"
 
@@ -18,7 +18,7 @@ function AdminUsers() {
     const fetchUsers = async () => {
       try {
         setLoading(true)
-        const response = await adminAPI.getUsers()
+        const response = await adminAPI.getUsers() // Use specific method
         setUsers(response.data.users)
       } catch (err) {
         setError("Failed to load users")
@@ -26,7 +26,6 @@ function AdminUsers() {
       } finally {
         setLoading(false)
       }
-      
     }
 
     if (user && user._id) {
@@ -36,8 +35,10 @@ function AdminUsers() {
 
   const handleToggleAdmin = async (userId) => {
     try {
-      const response = await adminAPI.toggleAdminStatus(userId)
+      const response = await adminAPI.toggleAdminStatus(userId) // Use specific method
       setUsers(users.map((u) => (u._id === userId ? response.data.user : u)))
+      setSuccessMessage("User role updated successfully")
+      setTimeout(() => setSuccessMessage(""), 3000)
     } catch (err) {
       setError(err.response?.data?.message || "Failed to update user")
       console.error(err)
@@ -50,13 +51,11 @@ function AdminUsers() {
   const handleDeleteUser = async (userId, isAdmin) => {
     try {
       // Client-side validation for better UX
-      // Prevent deleting yourself
       if (userId === user._id) {
         setError("You cannot delete your own account while logged in.")
         return
       }
 
-      // Prevent deleting the last admin
       if (isAdmin && adminCount <= 1) {
         setError("Cannot delete the last admin account. Promote another user first.")
         return
@@ -66,19 +65,12 @@ function AdminUsers() {
         return
       }
 
-      // Call the API
-      const response = await adminAPI.deleteUser(userId)
-      
-      // On success, update the UI
+      await adminAPI.deleteUser(userId) // Use specific method
       setUsers(users.filter((u) => u._id !== userId))
-      
-      // Clear any previous errors
       setError("")
-      
-      // Optional: Show success message
-      // setSuccessMessage("User deleted successfully")
+      setSuccessMessage("User deleted successfully")
+      setTimeout(() => setSuccessMessage(""), 3000)
     } catch (err) {
-      // The backend will return appropriate error messages
       setError(err.response?.data?.message || "Failed to delete user")
       console.error(err)
     }
@@ -87,21 +79,13 @@ function AdminUsers() {
   const handleEditUser = (user) => {
     setEditingUser(user)
   }
-  
+
   const handleSaveUser = async (updatedUser) => {
     try {
-      const response = await adminAPI.updateUser(updatedUser._id, updatedUser)
-      
-      // Update the users list with the updated user
-      setUsers(users.map(u => u._id === updatedUser._id ? response.data.user : u))
-      
-      // Close the modal
+      const response = await adminAPI.updateUser(updatedUser._id, updatedUser) // Use specific method
+      setUsers(users.map((u) => (u._id === updatedUser._id ? response.data.user : u)))
       setEditingUser(null)
-      
-      // Show success message
       setSuccessMessage("User updated successfully")
-      
-      // Clear success message after 3 seconds
       setTimeout(() => setSuccessMessage(""), 3000)
     } catch (err) {
       setError(err.response?.data?.message || "Failed to update user")
@@ -116,7 +100,11 @@ function AdminUsers() {
   return (
     <div className="admin-users">
       <div className="users-header">
-        <h1 className="users-title">Users</h1>
+        <h1 className="users-title">Users Management</h1>
+        <div className="users-stats">
+          <span className="stat-item">Total Users: {users.length}</span>
+          <span className="stat-item">Admins: {adminCount}</span>
+        </div>
       </div>
 
       {error && <div className="error-message">{error}</div>}
@@ -140,7 +128,9 @@ function AdminUsers() {
               users.map((u) => (
                 <tr key={u._id} className={u._id === user._id ? "current-user" : ""}>
                   <td className="user-id">{u._id}</td>
-                  <td className="user-name">{u.name} {u.lastName}</td>
+                  <td className="user-name">
+                    {u.name} {u.lastName}
+                  </td>
                   <td className="user-email">{u.email}</td>
                   <td>
                     <span className={`user-role ${u.isAdmin ? "admin" : "user"}`}>{u.isAdmin ? "Admin" : "User"}</span>
@@ -156,10 +146,7 @@ function AdminUsers() {
                         </button>
                       </td>
                       <td>
-                        <button
-                          className="edit-button"
-                          onClick={() => handleEditUser(u)}
-                        >
+                        <button className="edit-button" onClick={() => handleEditUser(u)}>
                           Edit
                         </button>
                       </td>
@@ -169,10 +156,10 @@ function AdminUsers() {
                           onClick={() => handleDeleteUser(u._id, u.isAdmin)}
                           disabled={u._id === user._id || (u.isAdmin && adminCount <= 1)}
                           title={
-                            u._id === user._id 
-                              ? "Cannot delete your own account" 
-                              : u.isAdmin && adminCount <= 1 
-                                ? "Cannot delete the last admin" 
+                            u._id === user._id
+                              ? "Cannot delete your own account"
+                              : u.isAdmin && adminCount <= 1
+                                ? "Cannot delete the last admin"
                                 : "Delete this user"
                           }
                         >
@@ -182,7 +169,9 @@ function AdminUsers() {
                     </>
                   ) : (
                     <>
-                      <td colSpan={3} className="self-user">Current User</td>
+                      <td colSpan={3} className="self-user">
+                        Current User
+                      </td>
                     </>
                   )}
                 </tr>
@@ -198,13 +187,7 @@ function AdminUsers() {
         </table>
       </div>
 
-      {editingUser && (
-        <EditUserModal
-          user={editingUser}
-          onClose={() => setEditingUser(null)}
-          onSave={handleSaveUser}
-        />
-      )}
+      {editingUser && <EditUserModal user={editingUser} onClose={() => setEditingUser(null)} onSave={handleSaveUser} />}
     </div>
   )
 }

@@ -24,9 +24,12 @@ mongoose
 app.use("/api/auth", require("./routes/userRoutes"))
 app.use("/api/admin", require("./routes/adminRoutes"))
 app.use("/api", require("./routes/productRoutes"))
-app.use("/api/orders", require("./routes/orderRoutes")) // Add this line
-// Seed initial data
+app.use("/api/orders", require("./routes/orderRoutes"))
+app.use("/api/reviews", require("./routes/reviewRoutes")) // Add this line
 
+// Routes
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/products', require('./routes/productRoutes')); // Make sure this line exists
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

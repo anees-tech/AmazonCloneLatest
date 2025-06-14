@@ -1,68 +1,93 @@
 import axios from "axios"
 
-// Base API instance banaya gaya hai
+const API_BASE_URL = "http://localhost:5000/api"
+
+// Create main API instance
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Backend ka base URL
+  baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json", // Default content type JSON rakha gaya hai
+    "Content-Type": "application/json",
   },
+  withCredentials: true,
 })
 
-// Request interceptor add kiya gaya hai taake har request ke headers mein user ID shamil ho
+// Request interceptor
 API.interceptors.request.use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem("user")) // Local storage se user data le rahe hain
-    if (user && user._id) {
-      config.headers["User-ID"] = user._id // Agar user authenticated hai to User-ID header mein add karte hain
+    const token = localStorage.getItem("token")
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
   (error) => {
-    return Promise.reject(error) // Agar koi error ho to usse reject karte hain
+    return Promise.reject(error)
   },
 )
 
-// Auth endpoints ke liye functions define kiye gaye hain
+// Response interceptor
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token")
+      localStorage.removeItem("user")
+      window.location.href = "/login"
+    }
+    return Promise.reject(error)
+  },
+)
+
+// Auth API
 export const authAPI = {
-  login: (data) => API.post("/auth/login", data), // Login endpoint
-  register: (data) => API.post("/auth/register", data), // Register endpoint
+  login: (credentials) => API.post("/auth/login", credentials),
+  register: (userData) => API.post("/auth/register", userData),
+  logout: () => API.post("/auth/logout"),
+  getProfile: () => API.get("/auth/profile"),
 }
 
-// Product endpoints ke liye functions define kiye gaye hain
+// Product API
 export const productAPI = {
-  getAllProducts: () => API.get("/products"), // Saare products lene ke liye
-  getProductById: (id) => API.get(`/products/${id}`), // Specific product by ID
-  getProductsByCategory: (categoryId) => API.get(`/products/category/${categoryId}`), // Category ke products
-  getFeaturedProducts: () => API.get("/products/featured"), // Featured products lene ke liye
+  getAllProducts: () => API.get("/products"),
+  getProductById: (id) => API.get(`/products/${id}`),
+  createProduct: (productData) => API.post("/products", productData),
+  updateProduct: (id, productData) => API.put(`/products/${id}`, productData),
+  deleteProduct: (id) => API.delete(`/products/${id}`),
 }
 
-// Category endpoints ke liye functions define kiye gaye hain
+// Category API
 export const categoryAPI = {
-  getAllCategories: () => API.get("/categories"), // Saari categories lene ke liye
+  getAllCategories: () => API.get("/categories"),
+  getCategoryById: (id) => API.get(`/categories/${id}`),
+  createCategory: (categoryData) => API.post("/categories", categoryData),
+  updateCategory: (id, categoryData) => API.put(`/categories/${id}`, categoryData),
+  deleteCategory: (id) => API.delete(`/categories/${id}`),
 }
 
-// Admin endpoints ke liye functions define kiye gaye hain
+// Admin API functions
 export const adminAPI = {
-  // Saare products lene ke liye
+  // Categories
+  getAdminCategories: () => API.get("/admin/categories"),
+  createCategory: (data) => API.post("/admin/categories", data),
+  updateCategory: (id, data) => API.put(`/admin/categories/${id}`, data),
+  deleteCategory: (id) => API.delete(`/admin/categories/${id}`),
+
+  // Products
   getAdminProducts: () => API.get("/admin/products"),
-  // Naya product banane ke liye
   createProduct: (data) => API.post("/admin/products", data),
-  // Product update karne ke liye
   updateProduct: (id, data) => API.put(`/admin/products/${id}`, data),
-  // Product delete karne ke liye
   deleteProduct: (id) => API.delete(`/admin/products/${id}`),
 
-  // Admin categories ke liye
-  getAdminCategories: () => API.get("/admin/categories"), // Saari categories lene ke liye
-  createCategory: (data) => API.post("/admin/categories", data), // Nayi category banane ke liye
-  updateCategory: (id, data) => API.put(`/admin/categories/${id}`, data), // Category update karne ke liye
-  deleteCategory: (id) => API.delete(`/admin/categories/${id}`), // Category delete karne ke liye
+  // Users
+  getAdminUsers: () => API.get("/admin/users"),
+  deleteUser: (id) => API.delete(`/admin/users/${id}`),
 
-  // Admin users ke liye
-  getUsers: () => API.get("/admin/users"), // Saare users lene ke liye
-  toggleAdminStatus: (id) => API.put(`/admin/users/${id}/toggle-admin`), // User ka admin status toggle karne ke liye
-  deleteUser: (id) => API.delete(`/admin/users/${id}`), // User delete karne ke liye
-  updateUser: (userId, userData) => API.put(`/admin/users/${userId}`, userData), // User update karne ke liye
+  // Orders
+  getAdminOrders: () => API.get("/admin/orders"),
+  getAdminOrder: (id) => API.get(`/admin/orders/${id}`),
+  updateOrderStatus: (id, data) => API.put(`/admin/orders/${id}`, data),
+  deleteOrder: (id) => API.delete(`/admin/orders/${id}`),
+  getOrderStats: () => API.get("/admin/orders-stats"),
 }
 
-export default API // API instance ko export karte hain
+export default API

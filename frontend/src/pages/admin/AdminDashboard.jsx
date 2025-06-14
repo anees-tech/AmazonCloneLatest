@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
-import { adminAPI } from "../../api/axios"
+import { adminAPI } from "../../api/adminApi"
 import "../../styles/admin/adminDashboard.css"
 
 function AdminDashboard() {
@@ -13,7 +13,9 @@ function AdminDashboard() {
     categories: 0,
     users: 0,
     orders: 0,
+    totalRevenue: 0,
   })
+  const [recentOrders, setRecentOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [currentDate, setCurrentDate] = useState("")
@@ -33,21 +35,24 @@ function AdminDashboard() {
     const fetchStats = async () => {
       try {
         setLoading(true)
-        const [productsRes, categoriesRes, usersRes, ordersRes] = await Promise.all([
+        setError("")
+
+        const [productsRes, categoriesRes, usersRes, orderStatsRes] = await Promise.all([
           adminAPI.getAdminProducts(),
           adminAPI.getAdminCategories(),
           adminAPI.getUsers(),
-          fetch("http://localhost:5000/api/orders")
-            .then(res => res.json())
-            .catch(() => ({ orders: [] })), // Handle if orders endpoint fails
+          adminAPI.getOrderStats(),
         ])
 
         setStats({
           products: productsRes.data.products?.length || 0,
           categories: categoriesRes.data.categories?.length || 0,
           users: usersRes.data.users?.length || 0,
-          orders: ordersRes.orders?.length || 0, // Note: different structure for fetch response
+          orders: orderStatsRes.data.stats?.totalOrders || 0,
+          totalRevenue: orderStatsRes.data.stats?.totalRevenue || 0,
         })
+
+        setRecentOrders(orderStatsRes.data.recentOrders || [])
       } catch (err) {
         setError("Failed to load dashboard data. Please try again later.")
         console.error("Dashboard fetch error:", err)
@@ -63,12 +68,34 @@ function AdminDashboard() {
     }
   }, [user])
 
+  const formatCurrency = (amount) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount || 0)
+  }
+
   if (loading) {
-    return <div className="admin-dashboard loading">Loading Dashboard...</div>
+    return (
+      <div className="admin-dashboard loading">
+        <div className="loading-spinner"></div>
+        <p>Loading Dashboard...</p>
+      </div>
+    )
   }
 
   if (error) {
-    return <div className="admin-dashboard error">{error}</div>
+    return (
+      <div className="admin-dashboard error">
+        <div className="error-content">
+          <h2>Error Loading Dashboard</h2>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()} className="retry-btn">
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -197,7 +224,58 @@ function AdminDashboard() {
             Manage Orders →
           </Link>
         </div>
+
+        <div className="stat-card revenue">
+          <div className="card-header">
+            <div className="card-icon revenue">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 className="card-title">Revenue</h3>
+              <p className="card-value">{formatCurrency(stats.totalRevenue)}</p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Recent Orders Section */}
+      {recentOrders.length > 0 && (
+        <div className="dashboard-section">
+          <div className="section-header">
+            <h2 className="section-title">Recent Orders</h2>
+            <Link to="/admin/orders" className="view-all-link">
+              View All Orders
+            </Link>
+          </div>
+          <div className="recent-orders">
+            {recentOrders.map((order) => (
+              <div key={order._id} className="order-card">
+                <div className="order-info">
+                  <span className="order-number">#{order.orderNumber}</span>
+                  <span className="order-customer">{order.user?.name}</span>
+                </div>
+                <div className="order-details">
+                  <span className="order-amount">{formatCurrency(order.totalAmount)}</span>
+                  <span className={`order-status ${order.status}`}>{order.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="dashboard-section">
         <div className="section-header">

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const OrderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -9,8 +9,8 @@ const OrderSchema = new mongoose.Schema(
     },
     orderNumber: {
       type: String,
-      unique: true,
       required: true,
+      unique: true,
     },
     items: [
       {
@@ -19,10 +19,23 @@ const OrderSchema = new mongoose.Schema(
           ref: "Product",
           required: true,
         },
-        name: { type: String, required: true },
-        quantity: { type: Number, required: true, min: 1 },
-        price: { type: Number, required: true },
-        image: { type: String },
+        name: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+          min: 0,
+        },
+        image: {
+          type: String,
+        },
       },
     ],
     shippingAddress: {
@@ -41,63 +54,61 @@ const OrderSchema = new mongoose.Schema(
       required: true,
       enum: ["card", "paypal", "cash"],
     },
-    paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
-    },
     itemsPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      min: 0,
     },
     taxPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      min: 0,
     },
     shippingPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      min: 0,
     },
     totalAmount: {
       type: Number,
       required: true,
-      default: 0.0,
+      min: 0,
     },
     status: {
       type: String,
       required: true,
-      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
-      default: "Pending",
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      default: "pending",
     },
     isPaid: {
       type: Boolean,
-      default: false,
+      default: true, // Assuming payment is made during checkout
     },
     paidAt: {
       type: Date,
+      default: Date.now,
     },
-    isDelivered: {
-      type: Boolean,
-      default: false,
+    processedAt: {
+      type: Date,
+    },
+    shippedAt: {
+      type: Date,
     },
     deliveredAt: {
       type: Date,
     },
     notes: {
       type: String,
+      default: "",
     },
   },
   {
     timestamps: true,
-  },
+  }
 )
 
 // Generate order number before saving
-OrderSchema.pre("save", async function (next) {
+orderSchema.pre("save", async function (next) {
   if (!this.orderNumber) {
     const count = await mongoose.model("Order").countDocuments()
     this.orderNumber = `ORD-${String(count + 1).padStart(6, "0")}`
@@ -105,4 +116,4 @@ OrderSchema.pre("save", async function (next) {
   next()
 })
 
-module.exports = mongoose.model("Order", OrderSchema)
+module.exports = mongoose.model("Order", orderSchema)
